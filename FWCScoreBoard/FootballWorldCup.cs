@@ -55,6 +55,11 @@ namespace FWCScoreBoard
             m.Score.HomeScore = homeScore;
             m.Score.AwayScore = awayScore;
         }
+
+        public static ConcurrentBag<Match> GetSummaryGames()
+        {
+            return scoreBoard;
+        }
     }
 
 
