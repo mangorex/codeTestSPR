@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 
 namespace FWCScoreBoard
 {
@@ -28,22 +23,37 @@ namespace FWCScoreBoard
 
         public static bool CheckIfMatchExist(Match match)
         {
-            return false;
+            return ScoreBoard.Any(m => m.Id == match.Id);
         }
 
         public static Match GetMatch(string id)
         {
-            return null;
+            return ScoreBoard.FirstOrDefault(m => m.Id == id);
         }
 
         public static void FinishMatch(string id)
         {
-           
+            Match m = GetMatch(id);
+
+            while (scoreBoard.Count > 0)
+            {
+                Match result;
+                scoreBoard.TryTake(out result);
+
+                if (result.Equals(m))
+                {
+                    break;
+                }
+
+                scoreBoard.Add(result);
+            }
         }
 
         public static void UpdateScore(string id, int homeScore, int awayScore)
         {
-
+            Match m = GetMatch(id);
+            m.Score.HomeScore = homeScore;
+            m.Score.AwayScore = awayScore;
         }
     }
 

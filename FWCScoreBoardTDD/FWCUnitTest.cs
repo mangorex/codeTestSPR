@@ -10,7 +10,7 @@ namespace FWCScoreBoardTDD
     public class FWCUnitTest
     {
         [Fact]
-        public void TestMatch()
+        public void TestCreateMatch()
         {
             DateTime dt = DateTime.Now;
             Match m = new Match("Mexico", "Canada", dt);
