@@ -9,6 +9,7 @@ class Programs
     static void Main(string[] args)
     {
         string path = @"..\..\..\..\FWCLeague.xml";
+     
 
         XmlSerializer serializer = new XmlSerializer(typeof(FWCLeague));
 
@@ -16,19 +17,54 @@ class Programs
         FWCLeague league = (FWCLeague)serializer.Deserialize(reader);
         reader.Close();
 
-        foreach(FWCScoreBoard.Xml2CSharp.Match mXml in league.Match)
+        AddMatchesParallelism(league);
+        Menu();
+    }
+
+    static void AddMatchesParallelism(FWCLeague league)
+    {
+        AutoResetEvent autoEvent1 = new AutoResetEvent(false);
+
+        Task t1 = Task.Factory.StartNew(() =>
         {
-            Match m = new Match(mXml.HomeTeam, mXml.AwayTeam,
-                Convert.ToDateTime(mXml.Date), mXml.Id
-            );
+            for (int i = 0; i < 3; i++)
+            {
+                FWCScoreBoard.Xml2CSharp.Match mXml = league.Match[i];
 
-            FootballWorldCup.AddMatch(m);
-        }
+                Match m = new Match(mXml.HomeTeam, mXml.AwayTeam,
+                    Convert.ToDateTime(mXml.Date), mXml.Id
+                );
 
+                FootballWorldCup.AddMatch(m);
+            }
+            //wait for second thread to add its items
+            autoEvent1.WaitOne();
+        });
+
+        Task t2 = Task.Factory.StartNew(() =>
+        {
+            for (int i = 3; i < league.Match.Count(); i++)
+            {
+                FWCScoreBoard.Xml2CSharp.Match mXml = league.Match[i];
+                Match m = new Match(mXml.HomeTeam, mXml.AwayTeam,
+                    Convert.ToDateTime(mXml.Date), mXml.Id
+                );
+
+                FootballWorldCup.AddMatch(m);
+            }
+            autoEvent1.Set();
+        });
+
+        t1.Wait();
+    }
+
+    static void Menu()
+    {
         string userInput, idTeam;
         int option, homeScore, awayScore;
 
-        OrderedParallelQuery<Match> scoreBoardSummary = FootballWorldCup.GetSummaryGames();
+        OrderedParallelQuery<Match> scoreBoardSummary =
+            FootballWorldCup.GetSummaryGames();
         FootballWorldCup.PrintScoreBoard(scoreBoardSummary);
 
         do
@@ -61,6 +97,6 @@ class Programs
 
             scoreBoardSummary = FootballWorldCup.GetSummaryGames();
             FootballWorldCup.PrintScoreBoard(scoreBoardSummary);
-        } while (option !=3);
+        } while (option != 3);
     }
 }
