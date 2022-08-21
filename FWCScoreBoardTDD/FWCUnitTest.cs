@@ -64,7 +64,7 @@ namespace FWCScoreBoardTDD
             FootballWorldCup.UpdateScore(m.Id, 3, 1);
 
             OrderedParallelQuery<Match> scoreBoardSummary = FootballWorldCup.GetSummaryGames();
-            Assert.True(
+             Assert.True(
                 scoreBoardSummary.ElementAt(0).HomeTeam.Equals("Uruguay") &&
                 scoreBoardSummary.ElementAt(0).AwayTeam.Equals("Italy") &&
                 scoreBoardSummary.ElementAt(0).HomeScore == 6 &&
@@ -75,8 +75,8 @@ namespace FWCScoreBoardTDD
                 scoreBoardSummary.ElementAt(1).AwayScore == 2 &&
                 scoreBoardSummary.ElementAt(2).HomeTeam.Equals("Mexico") &&
                 scoreBoardSummary.ElementAt(2).AwayTeam.Equals("Canada") &&
-                scoreBoardSummary.ElementAt(2).HomeScore == 6 &&
-                scoreBoardSummary.ElementAt(2).AwayScore == 6 &&
+                scoreBoardSummary.ElementAt(2).HomeScore == 0 &&
+                scoreBoardSummary.ElementAt(2).AwayScore == 5 &&
                 scoreBoardSummary.ElementAt(3).HomeTeam.Equals("Argentina") &&
                 scoreBoardSummary.ElementAt(3).AwayTeam.Equals("Australia") &&
                 scoreBoardSummary.ElementAt(3).HomeScore == 3 &&

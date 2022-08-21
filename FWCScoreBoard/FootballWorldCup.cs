@@ -60,7 +60,7 @@ namespace FWCScoreBoard
         {
             return scoreBoard.AsParallel().OrderByDescending(
                 sc => (sc.HomeScore + sc.AwayScore)).
-                ThenBy(sc => sc.Date);
+                ThenByDescending(sc => sc.Date);
         }
     }
 
