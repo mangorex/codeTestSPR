@@ -28,6 +28,8 @@ namespace FWCScoreBoardTDD
             Match m = new Match("Brasil", "España", dt);
             FootballWorldCup.AddMatch(m);
             Assert.True(FootballWorldCup.CheckIfMatchExist(m));
+            m = new Match("Spain", "Brazil", dt.AddHours(1));
+            FootballWorldCup.AddMatch(m);
             FootballWorldCup.FinishMatch(m.Id);
             Assert.False(FootballWorldCup.CheckIfMatchExist(m));
         }
