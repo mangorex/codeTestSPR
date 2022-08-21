@@ -15,12 +15,16 @@ namespace FWCScoreBoard
         private int awayScore;
         private DateTime date;
 
-        public Match(string homeTeam, string awayTeam, DateTime dt)
+        public Match(string homeTeam, string awayTeam, DateTime dt, string Id = "")
         {
-            this.Id = string.Concat(
-                homeTeam.Substring(0,2), awayTeam.Substring(0,2),
-                dt.Millisecond.ToString()
-            );
+            this.Id = Id;
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                this.Id = string.Concat(
+                homeTeam.Substring(0, 2), awayTeam.Substring(0, 2),
+                    dt.Millisecond.ToString()
+                );
+            }
             this.homeTeam = homeTeam;
             this.awayTeam = awayTeam;
             this.Date = dt;

@@ -33,6 +33,7 @@ namespace FWCScoreBoard
 
         public static void FinishMatch(string id)
         {
+            List<Match> temp = new List<Match>();
             Match m = GetMatch(id);
 
             while (scoreBoard.Count > 0)
@@ -45,7 +46,12 @@ namespace FWCScoreBoard
                     break;
                 }
 
-                scoreBoard.Add(result);
+                temp.Add(result);
+            }
+
+            foreach(Match match in temp)
+            {
+                scoreBoard.Add(match);
             }
         }
 
@@ -61,6 +67,24 @@ namespace FWCScoreBoard
             return scoreBoard.AsParallel().OrderByDescending(
                 sc => (sc.HomeScore + sc.AwayScore)).
                 ThenByDescending(sc => sc.Date);
+        }
+
+        public static void PrintScoreBoard(OrderedParallelQuery<Match> summaryGames)
+        {
+            Console.WriteLine();
+
+            foreach (Match m in summaryGames)
+            {
+                Console.WriteLine( string.Concat(
+                    "Id: ", m.Id, ", ",
+                    m.HomeTeam, "-", m.AwayTeam, ": ",
+                    m.HomeScore, "-", m.AwayScore, @" \ ",
+                    m.Date.ToString()
+                    )
+                );
+            }
+
+            Console.WriteLine();
         }
     }
 
