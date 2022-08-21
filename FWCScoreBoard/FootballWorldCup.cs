@@ -52,13 +52,15 @@ namespace FWCScoreBoard
         public static void UpdateScore(string id, int homeScore, int awayScore)
         {
             Match m = GetMatch(id);
-            m.Score.HomeScore = homeScore;
-            m.Score.AwayScore = awayScore;
+            m.HomeScore = homeScore;
+            m.AwayScore = awayScore;
         }
 
-        public static ConcurrentBag<Match> GetSummaryGames()
+        public static OrderedParallelQuery<Match> GetSummaryGames()
         {
-            return scoreBoard;
+            return scoreBoard.AsParallel().OrderByDescending(
+                sc => (sc.HomeScore + sc.AwayScore)).
+                ThenBy(sc => sc.Date);
         }
     }
 

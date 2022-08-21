@@ -11,25 +11,29 @@ namespace FWCScoreBoard
         private string id;
         private string homeTeam;
         private string awayTeam;
-        private Score score;
+        private int homeScore;
+        private int awayScore;
         private DateTime date;
 
         public Match(string homeTeam, string awayTeam, DateTime dt)
         {
             this.Id = string.Concat(
-                homeTeam.Substring(0,2), homeTeam.Substring(0,2),
+                homeTeam.Substring(0,2), awayTeam.Substring(0,2),
                 dt.Millisecond.ToString()
             );
             this.homeTeam = homeTeam;
-            this.AwayTeam = awayTeam;
+            this.awayTeam = awayTeam;
             this.Date = dt;
-            this.Score = new Score();
+            this.homeScore = 0;
+            this.awayScore = 0;
         }
 
         public string Id { get => id; set => id = value; }
         public string HomeTeam { get => homeTeam; set => homeTeam = value; }
         public string AwayTeam { get => awayTeam; set => awayTeam = value; }
-        public Score Score { get => score; set => score = value; }
+        public int HomeScore { get => homeScore; set => homeScore = value; }
+        public int AwayScore { get => awayScore; set => awayScore = value; }
+
         public DateTime Date { get => date; set => date = value; }
     }
 }
